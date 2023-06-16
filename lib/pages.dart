@@ -24,16 +24,6 @@ class _Pages extends State<Pages> {
   final controller = ScrollController();
   List<Key> keys = [];
 
-  void calc(index) {
-    Key key = keys[index];
-    print("key: $index");
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      print("Inside calc");
-      final RenderBox box = key.currentContext!.findRenderObject() as RenderBox;
-      print(box.size);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,13 +60,6 @@ class _Pages extends State<Pages> {
             );
           }).toList(),
         ),
-        onTap: () {
-          for (int i = 0; i < keys.length; i++) {
-            calc(i);
-            print("Ontap run");
-          }
-          print("Hello");
-        },
       ),
     );
   }
