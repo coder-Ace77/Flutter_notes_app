@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_notes/pages.dart';
 
-const data = [
+const data = <String>[
   "Hello",
   "world",
   "flutter",
