@@ -2,39 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:todo_notes/input.dart';
 
-const data = [
-  "Hello bros and sis",
-  "world",
-  "flutter",
-  "dart",
-  "android",
-  "ios",
-  "mac",
-  "windows",
-  "linux",
-  "ubuntu",
-  "fedora",
-  "redhat",
-  "centos",
-  "kali",
-  "parrot",
-  "debian",
-  "mint",
-  "elementary",
-  "manjaro",
-  "arch",
-  "gentoo",
-  "slackware",
-  "suse",
-  "opensuse",
-  "sabayon",
-  "solus",
-  "zorin",
-  "raspbian",
-  "raspberry pi",
-  "arduino",
-  "esp32",
+List data = <String>[
+  "Use double tap to add notes page items",
 ];
 
 class Pages extends StatefulWidget {
@@ -62,29 +33,44 @@ class _Pages extends State<Pages> {
         title: Text(_pagenumber.toString()),
       ),
       body: GestureDetector(
-          child: ScrollablePositionedList.builder(
-            itemCount: data.length,
-            itemScrollController: itemScrollController,
-            scrollOffsetController: scrollOffsetController,
-            itemBuilder: (context, index) {
-              return PageItem(index, index == _pagenumber);
-            },
-          ),
-          onTap: () {
-            setState(() {});
-            if (_pagenumber >= data.length - 1) {
-              return;
-            }
-            _pagenumber++;
-            itemScrollController
-                .scrollTo(
-                  index: _pagenumber,
-                  duration: const Duration(milliseconds: 600),
-                  curve: Curves.easeInOutCubic,
-                  alignment: 0.08,
-                )
-                .then((x) {});
-          }),
+        child: ScrollablePositionedList.builder(
+          itemCount: data.length,
+          itemScrollController: itemScrollController,
+          scrollOffsetController: scrollOffsetController,
+          itemBuilder: (context, index) {
+            return PageItem(index, index == _pagenumber);
+          },
+        ),
+        onTap: () {
+          setState(() {});
+          if (_pagenumber >= data.length - 1) {
+            return;
+          }
+          _pagenumber++;
+          itemScrollController
+              .scrollTo(
+                index: _pagenumber,
+                duration: const Duration(milliseconds: 600),
+                curve: Curves.easeInOutCubic,
+                alignment: 0.08,
+              )
+              .then((x) {});
+        },
+        onLongPress: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return const Input();
+              },
+            ),
+          ).then((value) {
+            setState(() {
+              data.add(value);
+            });
+          });
+        },
+      ),
     );
   }
 }
@@ -92,6 +78,7 @@ class _Pages extends State<Pages> {
 // ignore: must_be_immutable
 class PageItem extends StatelessWidget {
   int index = 0;
+  // ignore: prefer_final_fields
   bool _active = false;
   Color color = Colors.grey;
   int elevation = 0;
@@ -104,21 +91,20 @@ class PageItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double verticalHeight = 25;
+    if (data[index].length < 50) {
+      verticalHeight = 50;
+    }
+
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       elevation: elevation.toDouble(),
       child: Container(
-        foregroundDecoration: BoxDecoration(
-          color:
-              _active ? Colors.transparent : Color.fromARGB(255, 118, 237, 6),
-          backgroundBlendMode: BlendMode.saturation,
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 200),
-        // margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: verticalHeight),
         alignment: Alignment.center,
         color: color,
         child: Text(
-          "$index ${data[index]}",
+          "${data[index]}",
           style: const TextStyle(
             fontFamily: "sanserif",
             fontSize: 18,
