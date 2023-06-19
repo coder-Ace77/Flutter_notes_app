@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:todo_notes/books.dart';
 import 'package:todo_notes/test.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive/hive.dart';
+import 'package:todo_notes/model.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  await Hive.openBox<List>('title');
+  addBook("title", ["First book"]);
   runApp(const MyApp());
 }
 
@@ -15,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.purple,
+        primarySwatch: Colors.blueGrey,
       ),
       home: const MyHomePage(title: "TODOxNOTES"),
     );
@@ -36,6 +42,38 @@ class _MyHomePageState extends State<MyHomePage> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Scaffold(
+                  appBar: AppBar(
+                    title: const Text("Input"),
+                  ),
+                  body: Center(
+                    child: TextField(
+                      autofocus: true,
+                      onSubmitted: (value) {
+                        print("Value $value");
+                        Navigator.pop(context, value);
+                      },
+                      decoration:
+                          InputDecoration(labelText: "Enter book title"),
+                    ),
+                  ),
+                ),
+              ),
+            ).then((value) {
+              setState(() {
+                editBook("title", value);
+                addBook(value, ["First page"]);
+              });
+              printAll();
+            });
+          },
+          child: const Icon(Icons.add),
+        ),
         appBar: AppBar(
           title: Text(widget.title),
         ),
@@ -46,12 +84,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 Tab(
                     icon: Icon(
                   Icons.book,
-                  color: Colors.purple,
+                  color: Colors.blueGrey,
                 )),
                 Tab(
                     icon: Icon(
                   Icons.check_box,
-                  color: Colors.purple,
+                  color: Colors.blueGrey,
                 )),
               ],
             ),
@@ -67,3 +105,8 @@ class _MyHomePageState extends State<MyHomePage> {
     ); // This trailing comma makes auto-formatting nicer for build methods.
   }
 }
+
+// void addBook(x) {
+//   final books = Hive.box<List>('books');
+//   books.put('New Book', x);
+// }

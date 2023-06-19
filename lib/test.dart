@@ -4,6 +4,7 @@ class Test extends StatefulWidget {
   const Test({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _Test createState() => _Test();
 }
 
@@ -11,11 +12,8 @@ class _Test extends State {
   final key = GlobalKey();
 
   void showHeight() {
-    print("A: ${key.currentContext}");
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      print("Inside calc");
       final RenderBox box = key.currentContext!.findRenderObject() as RenderBox;
-      print(box.size);
     });
   }
 
