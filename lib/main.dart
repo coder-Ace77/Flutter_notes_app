@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:todo_notes/books.dart';
 import 'package:todo_notes/test.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:hive/hive.dart';
 import 'package:todo_notes/model.dart';
 
 void main() async {
   await Hive.initFlutter();
-  await Hive.openBox<List>('title');
-  addBook("title", ["First book"]);
+  await Hive.openBox<List>('books');
   runApp(const MyApp());
 }
 
@@ -36,34 +34,82 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        drawer: Drawer(
+          child: ListView(
+            children: [
+              DrawerHeader(
+                child: Container(
+                  padding: EdgeInsets.all(10),
+                  child: const Text(
+                    "TODOxNOTES",
+                    style: TextStyle(color: Colors.white, fontSize: 30),
+                  ),
+                ),
+                decoration: const BoxDecoration(
+                  color: Colors.blueGrey,
+                ),
+              ),
+              ListTile(
+                title: const Text("Settings"),
+                leading: const Icon(Icons.settings),
+                iconColor: Colors.blueGrey,
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.info),
+                iconColor: Colors.blueGrey,
+                title: const Text("About"),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: const Text("Clear Storage"),
+                leading: const Icon(Icons.delete_forever),
+                iconColor: Colors.blueGrey,
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (context) => Scaffold(
+              MaterialPageRoute(builder: (context) {
+                var controller = TextEditingController();
+                return Scaffold(
                   appBar: AppBar(
                     title: const Text("Input"),
                   ),
                   body: Center(
-                    child: TextField(
-                      autofocus: true,
-                      onSubmitted: (value) {
-                        print("Value $value");
-                        Navigator.pop(context, value);
+                    child: GestureDetector(
+                      child: TextField(
+                        controller: controller,
+                        autofocus: true,
+                        onSubmitted: (value) {
+                          print("Value $value");
+                          Navigator.pop(context, value);
+                        },
+                        decoration: const InputDecoration(
+                            labelText: "Enter book title"),
+                      ),
+                      onDoubleTap: () {
+                        Navigator.pop(context, controller.text);
                       },
-                      decoration:
-                          InputDecoration(labelText: "Enter book title"),
                     ),
                   ),
-                ),
-              ),
+                );
+              }),
             ).then((value) {
               setState(() {
                 editBook("title", value);
@@ -105,8 +151,3 @@ class _MyHomePageState extends State<MyHomePage> {
     ); // This trailing comma makes auto-formatting nicer for build methods.
   }
 }
-
-// void addBook(x) {
-//   final books = Hive.box<List>('books');
-//   books.put('New Book', x);
-// }

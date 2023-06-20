@@ -5,17 +5,10 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:todo_notes/input.dart';
 import 'package:todo_notes/model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:hive/hive.dart';
-
-// List data = <String>[
-//   "Use double tap to add notes page items",
-// ];
 
 class Pages extends StatefulWidget {
   String? title = "X";
-  Pages({Key? key, String? title}) : super(key: key) {
-    this.title = title;
-  }
+  Pages({Key? key, this.title});
   @override
   // ignore: library_private_types_in_public_api
   _Pages createState() => _Pages();
@@ -24,13 +17,6 @@ class Pages extends StatefulWidget {
 class _Pages extends State<Pages> {
   int _pagenumber = 0;
   final ItemScrollController itemScrollController = ItemScrollController();
-  final ScrollOffsetController scrollOffsetController =
-      ScrollOffsetController();
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,14 +25,13 @@ class _Pages extends State<Pages> {
         title: Text(widget.title!),
       ),
       body: ValueListenableBuilder(
-        valueListenable: Hive.box<List>('title').listenable(),
+        valueListenable: Hive.box<List>('books').listenable(),
         builder: (context, box, _) {
           final page = box.get(widget.title);
           return GestureDetector(
             child: ScrollablePositionedList.builder(
               itemCount: page!.length,
               itemScrollController: itemScrollController,
-              scrollOffsetController: scrollOffsetController,
               itemBuilder: (context, index) {
                 return PageItem(page, index, index == _pagenumber);
               },
@@ -86,7 +71,6 @@ class _Pages extends State<Pages> {
                   },
                 ),
               ).then((value) {
-                print(value);
                 if (value != null) {
                   addPage(widget.title, value);
                 }
@@ -110,7 +94,7 @@ class PageItem extends StatelessWidget {
   List page = [];
   PageItem(this.page, this.index, this._active, {super.key}) {
     if (_active) {
-      color = Color.fromARGB(255, 55, 87, 102);
+      color = const Color.fromARGB(255, 55, 87, 102);
       elevation = 10;
     }
   }
@@ -123,15 +107,19 @@ class PageItem extends StatelessWidget {
     }
 
     return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(100),
+      shape: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: Colors.transparent, width: 0),
       ),
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       elevation: elevation.toDouble(),
       child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: color,
+        ),
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: verticalHeight),
-        alignment: Alignment.center,
-        color: color,
+        alignment: Alignment.topLeft,
         child: Text(
           "${page[index]}",
           style: const TextStyle(

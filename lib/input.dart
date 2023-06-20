@@ -18,10 +18,14 @@ class _InputState extends State<Input> {
         child: GestureDetector(
           child: TextField(
             controller: _controller,
+            style: const TextStyle(
+              color: Color.fromARGB(255, 243, 237, 237),
+            ),
             decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Enter your notes',
-              fillColor: Color.fromARGB(255, 48, 44, 44),
+              hintText: "Start typing...",
+              hintStyle: TextStyle(color: Color.fromARGB(255, 243, 237, 237)),
+              filled: true,
+              fillColor: Color.fromARGB(255, 71, 99, 111),
             ),
             maxLines: 20,
             autofocus: true,
