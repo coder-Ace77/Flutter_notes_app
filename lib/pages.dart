@@ -1,5 +1,4 @@
 // import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:todo_notes/input.dart';
@@ -17,6 +16,51 @@ class Pages extends StatefulWidget {
 class _Pages extends State<Pages> {
   int _pagenumber = 0;
   final ItemScrollController itemScrollController = ItemScrollController();
+  int pagesLength = 0;
+  bool state = false;
+  void _scrollDown() {
+    setState(() {});
+    if (_pagenumber >= pagesLength - 1) return;
+    _pagenumber++;
+    itemScrollController.scrollTo(
+      index: _pagenumber,
+      duration: const Duration(milliseconds: 600),
+      curve: Curves.easeInOutCubic,
+      alignment: 0.08,
+    );
+  }
+
+  void _scrollUp() {
+    setState(() {});
+    if (_pagenumber <= 0) {
+      return;
+    }
+    _pagenumber--;
+    itemScrollController.scrollTo(
+      index: _pagenumber,
+      duration: const Duration(milliseconds: 600),
+      curve: Curves.easeInOutCubic,
+      alignment: 0.08,
+    );
+  }
+
+  Widget _floatingActionButton(BuildContext context) => FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return const Input();
+              },
+            ),
+          ).then((value) {
+            if (value != null) {
+              addPage(widget.title, value);
+            }
+          });
+        },
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -24,59 +68,27 @@ class _Pages extends State<Pages> {
       appBar: AppBar(
         title: Text(widget.title!),
       ),
+      floatingActionButton: _floatingActionButton(context),
       body: ValueListenableBuilder(
         valueListenable: Hive.box<List>('books').listenable(),
         builder: (context, box, _) {
           final page = box.get(widget.title);
+          if (page != null) pagesLength = page.length;
           return GestureDetector(
+            onTap: _scrollDown,
+            onDoubleTap: _scrollUp,
+            onLongPress: () {
+              setState(() {
+                state = !state;
+              });
+            },
             child: ScrollablePositionedList.builder(
               itemCount: page!.length,
               itemScrollController: itemScrollController,
               itemBuilder: (context, index) {
-                return PageItem(page, index, index == _pagenumber);
+                return PageItem(page, index, index == _pagenumber, state);
               },
             ),
-            onTap: () {
-              setState(() {});
-              if (_pagenumber >= page.length - 1) {
-                return;
-              }
-              _pagenumber++;
-              itemScrollController.scrollTo(
-                index: _pagenumber,
-                duration: const Duration(milliseconds: 600),
-                curve: Curves.easeInOutCubic,
-                alignment: 0.08,
-              );
-            },
-            onDoubleTap: () {
-              setState(() {});
-              if (_pagenumber <= 0) {
-                return;
-              }
-              _pagenumber--;
-              itemScrollController.scrollTo(
-                index: _pagenumber,
-                duration: const Duration(milliseconds: 600),
-                curve: Curves.easeInOutCubic,
-                alignment: 0.08,
-              );
-            },
-            onLongPress: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return const Input();
-                  },
-                ),
-              ).then((value) {
-                if (value != null) {
-                  addPage(widget.title, value);
-                }
-                printAll();
-              });
-            },
           );
         },
       ),
@@ -89,10 +101,14 @@ class PageItem extends StatelessWidget {
   int index = 0;
   // ignore: prefer_final_fields
   bool _active = false;
-  Color color = Colors.blueGrey.shade500;
+  Color color = Color(0xFF536D7A);
   int elevation = 0;
   List page = [];
-  PageItem(this.page, this.index, this._active, {super.key}) {
+  bool _state = false;
+
+  List<Widget> widgetList = [];
+
+  PageItem(this.page, this.index, this._active, this._state, {super.key}) {
     if (_active) {
       color = const Color.fromARGB(255, 55, 87, 102);
       elevation = 10;
@@ -103,10 +119,9 @@ class PageItem extends StatelessWidget {
   Widget build(BuildContext context) {
     double verticalHeight = 25;
     if (page[index].length < 50) {
-      verticalHeight = 50;
+      verticalHeight = 40;
     }
-
-    return Card(
+    widgetList.add(Card(
       shape: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
         borderSide: const BorderSide(color: Colors.transparent, width: 0),
@@ -130,6 +145,21 @@ class PageItem extends StatelessWidget {
           ),
         ),
       ),
+    ));
+    if (_state) {
+      widgetList.add(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Icon(Icons.delete),
+          Icon(Icons.edit),
+          Icon(Icons.share),
+        ],
+      ));
+    }
+    return Stack(
+      alignment: Alignment.center,
+      children: widgetList,
     );
   }
 }

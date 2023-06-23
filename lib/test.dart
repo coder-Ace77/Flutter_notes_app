@@ -9,36 +9,77 @@ class Test extends StatefulWidget {
 }
 
 class _Test extends State {
-  final key = GlobalKey();
-
-  void showHeight() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final RenderBox box = key.currentContext!.findRenderObject() as RenderBox;
-    });
-  }
-
+  List<Widget> wid_list = [ShowBox()];
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          key: key,
-          padding: EdgeInsets.all(20),
-          margin: EdgeInsets.all(30),
-          alignment: Alignment.center,
-          color: Colors.purple,
-          child: const Text("Test",
-              style: TextStyle(
-                  fontFamily: "sanserif",
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white)),
+        Stack(
+          children: wid_list,
         ),
         ElevatedButton(
-          onPressed: showHeight,
+          onPressed: () {
+            print("pressed");
+            setState(() {
+              wid_list.add(ButtonBox());
+            });
+          },
           child: const Text("Show Height"),
         ),
       ],
+    );
+  }
+}
+
+class ShowBox extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(20),
+      margin: EdgeInsets.all(30),
+      alignment: Alignment.center,
+      color: Color.fromARGB(255, 26, 63, 95),
+      child: const Text("Test",
+          style: TextStyle(
+              fontFamily: "sanserif",
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.white)),
+    );
+  }
+}
+
+class ButtonBox extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(20),
+      margin: EdgeInsets.all(30),
+      alignment: Alignment.center,
+      color: Color.fromARGB(255, 26, 63, 95),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              print("pressed");
+            },
+            child: const Icon(Icons.add),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              print("pressed");
+            },
+            child: const Icon(Icons.add),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              print("pressed");
+            },
+            child: const Icon(Icons.add),
+          ),
+        ],
+      ),
     );
   }
 }

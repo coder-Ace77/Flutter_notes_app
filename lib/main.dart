@@ -43,15 +43,15 @@ class _MyHomePageState extends State<MyHomePage> {
           child: ListView(
             children: [
               DrawerHeader(
+                decoration: const BoxDecoration(
+                  color: Colors.blueGrey,
+                ),
                 child: Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: const Text(
                     "TODOxNOTES",
                     style: TextStyle(color: Colors.white, fontSize: 30),
                   ),
-                ),
-                decoration: const BoxDecoration(
-                  color: Colors.blueGrey,
                 ),
               ),
               ListTile(
