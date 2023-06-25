@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:todo_notes/books.dart';
-import 'package:todo_notes/test.dart';
+import 'package:todo_notes/todo.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_notes/model.dart';
 
 void main() async {
   await Hive.initFlutter();
   await Hive.openBox<List>('books');
+  await Hive.openBox<List>('todo');
+
   runApp(const MyApp());
 }
 
@@ -33,93 +35,62 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
+  late final TabController _tabController =
+      TabController(length: 3, vsync: this, initialIndex: 0);
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController.addListener(() {
+      print("Fired!!");
+    });
+  }
+
+  void addbookpage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) {
+        var controller = TextEditingController();
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text("Input"),
+          ),
+          body: Center(
+            child: GestureDetector(
+              child: TextField(
+                controller: controller,
+                autofocus: true,
+                onSubmitted: (value) {
+                  print("Value $value");
+                  Navigator.pop(context, value);
+                },
+                decoration:
+                    const InputDecoration(labelText: "Enter book title"),
+              ),
+              onDoubleTap: () {
+                Navigator.pop(context, controller.text);
+              },
+            ),
+          ),
+        );
+      }),
+    ).then((value) {
+      setState(() {
+        editBook("title", value);
+        addBook(value, ["First page"]);
+      });
+      printAll();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        drawer: Drawer(
-          child: ListView(
-            children: [
-              DrawerHeader(
-                decoration: const BoxDecoration(
-                  color: Colors.blueGrey,
-                ),
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  child: const Text(
-                    "TODOxNOTES",
-                    style: TextStyle(color: Colors.white, fontSize: 30),
-                  ),
-                ),
-              ),
-              ListTile(
-                title: const Text("Settings"),
-                leading: const Icon(Icons.settings),
-                iconColor: Colors.blueGrey,
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.info),
-                iconColor: Colors.blueGrey,
-                title: const Text("About"),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: const Text("Clear Storage"),
-                leading: const Icon(Icons.delete_forever),
-                iconColor: Colors.blueGrey,
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) {
-                var controller = TextEditingController();
-                return Scaffold(
-                  appBar: AppBar(
-                    title: const Text("Input"),
-                  ),
-                  body: Center(
-                    child: GestureDetector(
-                      child: TextField(
-                        controller: controller,
-                        autofocus: true,
-                        onSubmitted: (value) {
-                          print("Value $value");
-                          Navigator.pop(context, value);
-                        },
-                        decoration: const InputDecoration(
-                            labelText: "Enter book title"),
-                      ),
-                      onDoubleTap: () {
-                        Navigator.pop(context, controller.text);
-                      },
-                    ),
-                  ),
-                );
-              }),
-            ).then((value) {
-              setState(() {
-                editBook("title", value);
-                addBook(value, ["First page"]);
-              });
-              printAll();
-            });
-          },
-          child: const Icon(Icons.add),
-        ),
+        drawer: const NewDrawer(),
         appBar: AppBar(
           title: Text(widget.title),
         ),
@@ -142,12 +113,61 @@ class _MyHomePageState extends State<MyHomePage> {
             Expanded(
               child: TabBarView(children: [
                 Books(),
-                Test(),
+                Tasks(),
               ]),
             )
           ],
         ),
       ),
     ); // This trailing comma makes auto-formatting nicer for build methods.
+  }
+}
+
+class NewDrawer extends StatelessWidget {
+  const NewDrawer({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        children: [
+          DrawerHeader(
+            decoration: const BoxDecoration(
+              color: Colors.blueGrey,
+            ),
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              child: const Text(
+                "TODOxNOTES",
+                style: TextStyle(color: Colors.white, fontSize: 30),
+              ),
+            ),
+          ),
+          ListTile(
+            title: const Text("Settings"),
+            leading: const Icon(Icons.settings),
+            iconColor: Colors.blueGrey,
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.info),
+            iconColor: Colors.blueGrey,
+            title: const Text("About"),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            title: const Text("Clear Storage"),
+            leading: const Icon(Icons.delete_forever),
+            iconColor: Colors.blueGrey,
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
   }
 }

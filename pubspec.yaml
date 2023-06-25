@@ -40,6 +40,8 @@ dependencies:
   flutter_slidable: ^3.0.0
   custom_floating_action_button: ^0.0.3
   flutter_keyboard_visibility: ^5.4.1
+  popup_card: ^0.1.0
+  cron: ^0.5.1
 
 dev_dependencies:
   flutter_test:

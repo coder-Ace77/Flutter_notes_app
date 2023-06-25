@@ -153,6 +153,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.1"
+  cron:
+    dependency: "direct main"
+    description:
+      name: cron
+      sha256: d98aa8cdad0cccdb6b098e6a1fb89339c180d8a229145fa4cd8c6fc538f0e35f
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.1"
   crypto:
     dependency: transitive
     description:
@@ -520,6 +528,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.1"
+  popup_card:
+    dependency: "direct main"
+    description:
+      name: popup_card
+      sha256: "515a1a059559358d5184f6961ebebcbd2e9a0f52bcbf77f3279e0bb0b0f66621"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
   process:
     dependency: transitive
     description:
