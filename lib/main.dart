@@ -159,7 +159,7 @@ class NewDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: const Text("Clear Storage"),
+            title: const Text("Clear Storages"),
             leading: const Icon(Icons.delete_forever),
             iconColor: Colors.blueGrey,
             onTap: () {
