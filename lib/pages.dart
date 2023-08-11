@@ -83,10 +83,12 @@ class _Pages extends State<Pages> {
               });
             },
             child: ScrollablePositionedList.builder(
-              itemCount: page!.length,
+              itemCount: page == null ? 0 : page.length,
               itemScrollController: itemScrollController,
               itemBuilder: (context, index) {
-                return PageItem(page, index, index == _pagenumber, state);
+                return page == null
+                    ? Text("No item")
+                    : PageItem(page, index, index == _pagenumber, state);
               },
             ),
           );

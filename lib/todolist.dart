@@ -92,6 +92,7 @@ class ListItemButton extends StatefulWidget {
 
 class ListItemsStateButton extends State<ListItemButton> {
   final TextEditingController mycontroller = TextEditingController();
+  bool _value = true;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -113,8 +114,18 @@ class ListItemsStateButton extends State<ListItemButton> {
                       ),
                     ),
                     Row(
-                      children: const [
-                        Checkbox(value: false, onChanged: null),
+                      children: [
+                        Checkbox(
+                            value: _value,
+                            onChanged: (x) {
+                              setState(() {
+                                print("setstate runs $x $_value");
+                                if (x != null)
+                                  _value = x;
+                                else
+                                  _value = false;
+                              });
+                            }),
                         Text("Daily"),
                       ],
                     ),
@@ -125,8 +136,12 @@ class ListItemsStateButton extends State<ListItemButton> {
                       onPressed: () {
                         if (widget.isBook) {
                           editBook("title", mycontroller.text);
+                        } else {
+                          addTodos(mycontroller.text);
+                          if (_value == true) {
+                            addDailyTodos(mycontroller.text);
+                          }
                         }
-                        addTodos(mycontroller.text);
                         setState(() {});
                         Navigator.pop(context);
                       },

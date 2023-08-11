@@ -43,6 +43,25 @@ void addDailyTodos(x) {
   box.put("dailytodos", l);
 }
 
+void checktime() {
+  Box box = Hive.box<int>('day');
+  int? x = box.get("day");
+  if (x == null) {
+    box.put("day", DateTime.now().day);
+    return;
+  } else {
+    if (x != DateTime.now().day) {
+      box.put("day", DateTime.now().day);
+      addDailyTasks();
+    }
+  }
+}
+
+void printAllDaily() {
+  List l = getDailyTodos();
+  for (var i in l) {}
+}
+
 void removeTodos(x) {
   if (x == null) return;
   final box = getTodoBox();

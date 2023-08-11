@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_notes/books.dart';
+import 'package:todo_notes/model_todo.dart';
 import 'package:todo_notes/todo.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_notes/model.dart';
@@ -8,7 +9,8 @@ void main() async {
   await Hive.initFlutter();
   await Hive.openBox<List>('books');
   await Hive.openBox<List>('todo');
-
+  await Hive.openBox<int>('day');
+  checktime();
   runApp(const MyApp());
 }
 
@@ -43,9 +45,7 @@ class _MyHomePageState extends State<MyHomePage>
   @override
   void initState() {
     super.initState();
-    _tabController.addListener(() {
-      print("Fired!!");
-    });
+    _tabController.addListener(() {});
   }
 
   void addbookpage() {
@@ -63,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage>
                 controller: controller,
                 autofocus: true,
                 onSubmitted: (value) {
-                  print("Value $value");
+                  // print("Value $value");
                   Navigator.pop(context, value);
                 },
                 decoration:
