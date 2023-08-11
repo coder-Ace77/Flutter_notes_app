@@ -5,6 +5,7 @@ Box getTodoBox() => Hive.box<List>('todo');
 
 List<dynamic> getTodos() {
   final box = getTodoBox();
+  print("HELLO");
   var x = box.get("todos");
   if (x == null) {
     return [];
