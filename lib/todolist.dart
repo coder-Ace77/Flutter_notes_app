@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:todo_notes/add_task.dart';
+import 'package:todo_notes/hello.dart';
 import 'package:todo_notes/model.dart';
 import 'package:todo_notes/model_todo.dart';
 
@@ -91,6 +93,12 @@ class ListItemButton extends StatefulWidget {
 }
 
 class ListItemsStateButton extends State<ListItemButton> {
+  void check_task(BuildContext context) {
+    print("Hello");
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const AddTask()));
+  }
+
   final TextEditingController mycontroller = TextEditingController();
   bool _value = true;
   @override
@@ -150,16 +158,26 @@ class ListItemsStateButton extends State<ListItemButton> {
               );
             });
       },
-      child: Container(
-        padding: const EdgeInsets.all(23),
-        child: Row(
-          children: const [
-            Icon(Icons.add, color: Color.fromARGB(255, 21, 77, 97)),
-            Text("  Add new task",
-                style: TextStyle(
-                    fontSize: 16, color: Color.fromARGB(255, 65, 104, 119))),
-          ],
-        ),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(23),
+            child: Row(
+              children: const [
+                Icon(Icons.add, color: Color.fromARGB(255, 21, 77, 97)),
+                Text("  Add new task",
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Color.fromARGB(255, 65, 104, 119))),
+              ],
+            ),
+          ),
+          ElevatedButton(
+              onPressed: () {
+                check_task(context);
+              },
+              child: const Text("Check Button"))
+        ],
       ),
     );
   }

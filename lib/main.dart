@@ -94,8 +94,8 @@ class _MyHomePageState extends State<MyHomePage>
         appBar: AppBar(
           title: Text(widget.title),
         ),
-        body: Column(
-          children: const [
+        body: const Column(
+          children: [
             TabBar(
               tabs: [
                 Tab(
