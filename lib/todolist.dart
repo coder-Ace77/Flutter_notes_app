@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_notes/model.dart';
-import 'package:todo_notes/model_todo.dart';
+import 'models/todo.dart';
 
 class TodoList extends StatefulWidget {
   const TodoList({Key? key}) : super(key: key);
@@ -13,9 +13,9 @@ class TodoListState extends State {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-        valueListenable: Hive.box<List>('todo').listenable(),
+        valueListenable: Hive.box<Todo>('todos').listenable(),
         builder: (context, box, _) {
-          List list = getTodos();
+          List list = box.values.toList().cast<Todo>();
           if (list.isEmpty) {
             return Container(
               margin: const EdgeInsets.only(top: 20),
@@ -36,12 +36,11 @@ class TodoListState extends State {
                 if (index == list.length - 1) {
                   return Column(
                     children: [
-                      ListItems(list[index]),
                       ListItemButton(false),
                     ],
                   );
                 }
-                return ListItems(list[index]);
+                return ListItems(list[index].title);
               });
         });
   }
@@ -69,7 +68,7 @@ class ListItemsState extends State<ListItems> {
           Checkbox(
               value: value,
               onChanged: (x) {
-                removeTodos(widget.title);
+                // removeTodos(widget.title);
                 setState(() {
                   value = x;
                 });
@@ -120,13 +119,14 @@ class ListItemsStateButton extends State<ListItemButton> {
                             onChanged: (x) {
                               setState(() {
                                 print("setstate runs $x $_value");
-                                if (x != null)
+                                if (x != null) {
                                   _value = x;
-                                else
+                                } else {
                                   _value = false;
+                                }
                               });
                             }),
-                        Text("Daily"),
+                        const Text("Daily"),
                       ],
                     ),
                   ],
@@ -137,10 +137,7 @@ class ListItemsStateButton extends State<ListItemButton> {
                         if (widget.isBook) {
                           editBook("title", mycontroller.text);
                         } else {
-                          addTodos(mycontroller.text);
-                          if (_value == true) {
-                            addDailyTodos(mycontroller.text);
-                          }
+                          // addTodos();
                         }
                         setState(() {});
                         Navigator.pop(context);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_notes/books.dart';
-import 'package:todo_notes/model_todo.dart';
+import 'package:todo_notes/models/todo.dart';
+// import 'package:todo_notes/model_todo.dart';
 import 'package:todo_notes/todo.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_notes/model.dart';
@@ -8,9 +9,11 @@ import 'package:todo_notes/model.dart';
 void main() async {
   await Hive.initFlutter();
   await Hive.openBox<List>('books');
-  await Hive.openBox<List>('todo');
+
+  Hive.registerAdapter(TodoAdapter());
+  await Hive.openBox<Todo>('todos');
   await Hive.openBox<int>('day');
-  checktime();
+  // checktime();
   runApp(const MyApp());
 }
 
