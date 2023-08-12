@@ -31,18 +31,47 @@ void daliyComp() {
 
   int currentDay = currentDateTime.day;
   int currentMonth = currentDateTime.month;
+  int currentWeek = currentDateTime.weekday;
 
   int previousDay = previousDateTime.day;
   int previousMonth = previousDateTime.month;
+  int previousWeek = previousDateTime.weekday;
 
-  if (currentDay > previousDay) {
-    previousDay = currentDay;
+  print(currentDay);
+  print(previousDay);
+
+  if (currentDay != previousDay ||
+      currentWeek != previousWeek ||
+      currentMonth != previousMonth) {
+    print("Date change detected!!!");
     for (Todo i in l) {
-      if (i.repeatState == "Daily") {
+      if (i.repeatState == 1) {
         i.done = false;
         i.progress = 0;
         i.save();
       }
     }
   }
+  if (currentWeek != previousWeek || currentMonth != previousMonth) {
+    print("Date change detected!!!");
+    for (Todo i in l) {
+      if (i.repeatState == 2) {
+        i.done = false;
+        i.progress = 0;
+        i.save();
+      }
+    }
+  }
+
+  if (currentMonth != previousMonth) {
+    for (Todo i in l) {
+      if (i.repeatState == 3) {
+        i.done = false;
+        i.progress = 0;
+        i.save();
+      }
+    }
+  }
+  Box timeBox = getTimeBox();
+  timeBox.put('time', currentDateTime);
 }

@@ -5,6 +5,7 @@ import 'package:todo_notes/models/todo.dart';
 import 'package:todo_notes/todo.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_notes/model.dart';
+import './fetching_time.dart';
 
 void main() async {
   await Hive.initFlutter();
@@ -12,7 +13,7 @@ void main() async {
   await Hive.openBox<DateTime>("DateTime");
   Hive.registerAdapter(TodoAdapter());
   await Hive.openBox<Todo>('task');
-  // checktime();
+  daliyComp();
   runApp(const MyApp());
 }
 
