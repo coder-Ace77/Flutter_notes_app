@@ -4,6 +4,8 @@ import 'package:todo_notes/add_task.dart';
 import 'package:todo_notes/model.dart';
 import 'package:todo_notes/model_todo.dart';
 import 'models/todo.dart';
+import 'progress_bar.dart';
+import 'task_widget.dart';
 
 class TodoList extends StatefulWidget {
   const TodoList({Key? key}) : super(key: key);
@@ -44,14 +46,25 @@ class TodoListState extends State {
               itemCount: list.length,
               itemBuilder: (context, index) {
                 if (index == list.length - 1) {
+                  if (list[index].isGoal) {
+                    return Column(
+                      children: [
+                        ProgressBar(list[index]),
+                        ListItemButton(false),
+                      ],
+                    );
+                  }
                   return Column(
                     children: [
-                      ListItems(list[index]),
+                      TaskWidget(list[index]),
                       ListItemButton(false),
                     ],
                   );
                 }
-                return ListItems(list[index]);
+                if (list[index].isGoal) {
+                  return ProgressBar(list[index]);
+                }
+                return TaskWidget(list[index]);
               });
         });
   }

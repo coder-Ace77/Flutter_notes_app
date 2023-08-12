@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:todo_notes/models/todo.dart';
 
 class TaskWidget extends StatefulWidget {
-  const TaskWidget({super.key});
+  Todo todo;
+  TaskWidget(this.todo, {super.key});
 
   @override
   State<TaskWidget> createState() => _TaskWidget();
@@ -24,7 +26,7 @@ class _TaskWidget extends State<TaskWidget> {
         children: [
           Icon(Icons.watch_later_outlined),
           Text(
-            "Learn Artificial Intelligence",
+            widget.todo.title,
             style: TextStyle(fontSize: 16),
           ),
           Checkbox(
@@ -33,6 +35,8 @@ class _TaskWidget extends State<TaskWidget> {
               onChanged: (value) {
                 setState(() {
                   isChecked = value!;
+                  widget.todo.done = isChecked;
+                  widget.todo.save();
                 });
               })
         ],
