@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import './progress_bar.dart';
+import './task_widget.dart';
 
 class AddTask extends StatefulWidget {
   const AddTask({super.key});
@@ -143,7 +145,10 @@ class _AddTaskState extends State<AddTask> {
                     );
                     print(currentText);
                   },
-                  child: const Text("Save"))
+                  child: const Text("Save")),
+              const Text("Hello"),
+              ProgressBar(),
+              TaskWidget(),
             ],
           ),
         ));

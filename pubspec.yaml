@@ -43,6 +43,7 @@ dependencies:
   popup_card: ^0.1.0
   cron: ^0.5.1
   image_picker: ^1.0.0
+  percent_indicator: ^4.2.3
 
 dev_dependencies:
   flutter_test:
