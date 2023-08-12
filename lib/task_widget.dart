@@ -19,17 +19,27 @@ class _TaskWidget extends State<TaskWidget> {
       margin: EdgeInsets.all(20),
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.black, width: 2),
+          border: Border.all(color: Colors.white, width: 2),
           borderRadius: BorderRadius.circular(10)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Icon(Icons.watch_later_outlined),
+          Icon(
+            Icons.watch_later_outlined,
+            color: Colors.white,
+          ),
           Text(
             widget.todo.title,
-            style: TextStyle(fontSize: 16),
+            style: TextStyle(fontSize: 16, color: Colors.white),
           ),
           Checkbox(
+              fillColor: MaterialStateProperty.resolveWith<Color>(
+                  (Set<MaterialState> states) {
+                if (states.contains(MaterialState.disabled)) {
+                  return Colors.orange.withOpacity(.32);
+                }
+                return Colors.orange;
+              }),
               shape: CircleBorder(eccentricity: 0.2),
               value: isChecked,
               onChanged: (value) {

@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
       ),
-      home: const MyHomePage(title: "TODOxNOTES"),
+      home: const MyHomePage(title: "Your Notes"),
     );
   }
 }
@@ -88,28 +88,58 @@ class _MyHomePageState extends State<MyHomePage>
     });
   }
 
+  int currentTabIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        backgroundColor: Color.fromRGBO(50, 50, 50, 0.7),
         drawer: const NewDrawer(),
         appBar: AppBar(
-          title: Text(widget.title),
+          backgroundColor: Colors.black,
+          centerTitle: true,
+          title: Text(widget.title, style: TextStyle()),
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: const Icon(
+                  Icons.library_books_outlined,
+                ),
+                onPressed: () {
+                  print(DefaultTabController.of(context).index);
+                  Scaffold.of(context).openDrawer();
+                },
+                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              );
+            },
+          ),
         ),
         body: Column(
-          children: const [
+          children: [
             TabBar(
+              onTap: (value) {
+                setState(() {
+                  print(value);
+                  currentTabIndex = value;
+                });
+              },
+              padding: EdgeInsets.fromLTRB(150, 0, 150, 0),
               tabs: [
                 Tab(
                     icon: Icon(
                   Icons.book,
-                  color: Colors.blueGrey,
+                  color: currentTabIndex == 0
+                      ? Color.fromRGBO(255, 186, 0, 1)
+                      : Colors.white,
                 )),
                 Tab(
                     icon: Icon(
                   Icons.check_box,
-                  color: Colors.blueGrey,
+                  color: currentTabIndex == 1
+                      ? Color.fromRGBO(255, 186, 0, 1)
+                      : Colors.white,
                 )),
               ],
             ),
