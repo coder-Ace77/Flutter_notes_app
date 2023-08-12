@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_notes/add_task.dart';
-import 'package:todo_notes/hello.dart';
 import 'package:todo_notes/model.dart';
 import 'package:todo_notes/model_todo.dart';
+import 'models/todo.dart';
 
 class TodoList extends StatefulWidget {
   const TodoList({Key? key}) : super(key: key);
@@ -15,9 +15,16 @@ class TodoListState extends State {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-        valueListenable: Hive.box<List>('todo').listenable(),
+        valueListenable: Hive.box<Todo>('task').listenable(),
         builder: (context, box, _) {
-          List list = getTodos();
+          List list = box.values.toList().cast<Todo>();
+          List temp = [];
+          for (Todo i in list) {
+            if (i.done == false) {
+              temp.add(i);
+            }
+          }
+          list = temp;
           if (list.isEmpty) {
             return Container(
               margin: const EdgeInsets.only(top: 20),
@@ -32,6 +39,7 @@ class TodoListState extends State {
               ),
             );
           }
+          print(temp);
           return ListView.builder(
               itemCount: list.length,
               itemBuilder: (context, index) {
@@ -51,8 +59,8 @@ class TodoListState extends State {
 
 // ignore: must_be_immutable
 class ListItems extends StatefulWidget {
-  String title = "";
-  ListItems(this.title, {Key? key}) : super(key: key);
+  Todo todo;
+  ListItems(this.todo, {Key? key}) : super(key: key);
   @override
   ListItemsState createState() => ListItemsState();
 }
@@ -71,12 +79,13 @@ class ListItemsState extends State<ListItems> {
           Checkbox(
               value: value,
               onChanged: (x) {
-                removeTodos(widget.title);
+                widget.todo.done = true;
                 setState(() {
+                  printTodo();
                   value = x;
                 });
               }),
-          Text(widget.title,
+          Text(widget.todo.title,
               style: const TextStyle(
                   fontSize: 16, color: Color.fromARGB(255, 21, 77, 97))),
         ],
@@ -94,9 +103,12 @@ class ListItemButton extends StatefulWidget {
 
 class ListItemsStateButton extends State<ListItemButton> {
   void check_task(BuildContext context) {
-    print("Hello");
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const AddTask()));
+        context, MaterialPageRoute(builder: (context) => const AddTask())).then(
+      (value) {
+        addTodos(value);
+      },
+    );
   }
 
   final TextEditingController mycontroller = TextEditingController();
@@ -127,14 +139,14 @@ class ListItemsStateButton extends State<ListItemButton> {
                             value: _value,
                             onChanged: (x) {
                               setState(() {
-                                print("setstate runs $x $_value");
-                                if (x != null)
+                                if (x != null) {
                                   _value = x;
-                                else
+                                } else {
                                   _value = false;
+                                }
                               });
                             }),
-                        Text("Daily"),
+                        const Text("Daily"),
                       ],
                     ),
                   ],
@@ -145,10 +157,7 @@ class ListItemsStateButton extends State<ListItemButton> {
                         if (widget.isBook) {
                           editBook("title", mycontroller.text);
                         } else {
-                          addTodos(mycontroller.text);
-                          if (_value == true) {
-                            addDailyTodos(mycontroller.text);
-                          }
+                          // addTodos();
                         }
                         setState(() {});
                         Navigator.pop(context);

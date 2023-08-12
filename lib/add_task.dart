@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './progress_bar.dart';
 import './task_widget.dart';
+import 'package:todo_notes/models/todo.dart';
 
 class AddTask extends StatefulWidget {
   const AddTask({super.key});
@@ -12,7 +13,7 @@ class AddTask extends StatefulWidget {
 class _AddTaskState extends State<AddTask> {
   final titleController = TextEditingController();
 
-  var currentText = "Daily";
+  var currentText = "No Repeat";
   var _currentSliderValue = 0.0;
 
   int red = 0;
@@ -20,7 +21,7 @@ class _AddTaskState extends State<AddTask> {
   int blue = 0;
 
   bool isGoal = false;
-  int chooseColor1 = 0;
+  int chooseColor1 = 255;
   int chooseColor2 = 0;
 
   void setGoal(bool value) {
@@ -66,6 +67,19 @@ class _AddTaskState extends State<AddTask> {
                         border: OutlineInputBorder(),
                         labelText: 'Title',
                         hintText: 'Enter the title')),
+              ),
+              SizedBox(
+                height: 50,
+                child: ListTile(
+                  title: const Text("No Repeat"),
+                  leading: Radio(
+                    value: "No Repeat",
+                    groupValue: currentText,
+                    onChanged: (value) {
+                      setText(value.toString());
+                    },
+                  ),
+                ),
               ),
               SizedBox(
                 height: 50,
@@ -131,7 +145,7 @@ class _AddTaskState extends State<AddTask> {
               Slider(
                   value: _currentSliderValue,
                   max: 20,
-                  divisions: 10,
+                  divisions: 20,
                   onChanged: (value) {
                     setState(() {
                       _currentSliderValue = value;
@@ -140,10 +154,24 @@ class _AddTaskState extends State<AddTask> {
               Text(_currentSliderValue.toInt().toString() + " units"),
               ElevatedButton(
                   onPressed: () {
-                    print(
-                      titleController.text,
-                    );
-                    print(currentText);
+                    int s = 0;
+                    if (currentText == "Daily") {
+                      s = 1;
+                    } else if (currentText == "Weekly") {
+                      s = 2;
+                    } else if (currentText == "Monthly") {
+                      s = 3;
+                    }
+                    Navigator.pop(
+                        context,
+                        Todo(
+                            title: titleController.text,
+                            totalUnits: _currentSliderValue.toInt(),
+                            isGoal: isGoal,
+                            done: false,
+                            progress: 0,
+                            repeats: currentText == "No Repeat" ? true : false,
+                            repeatState: s));
                   },
                   child: const Text("Save")),
               const Text("Hello"),
