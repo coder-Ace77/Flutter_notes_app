@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:todo_notes/models/todo.dart';
 
 class ProgressBar extends StatefulWidget {
-  const ProgressBar({super.key});
+  Todo todo;
+  ProgressBar(this.todo, {super.key});
 
   @override
   State<ProgressBar> createState() => _ProgressBarState();
@@ -28,8 +30,8 @@ class _ProgressBarState extends State<ProgressBar> {
               children: [
                 Column(
                   children: [
-                    const Text(
-                      "Learn Artificial Intelligence",
+                    Text(
+                      widget.todo.title,
                       style: TextStyle(fontSize: 16),
                     ),
                   ],
@@ -40,11 +42,13 @@ class _ProgressBarState extends State<ProgressBar> {
                       barRadius: Radius.circular(10),
                       width: 200.0,
                       lineHeight: 10.0,
-                      percent: hoursCompleted / 10,
+                      percent:
+                          (hoursCompleted / widget.todo.totalUnits!.toDouble()),
                       backgroundColor: Colors.grey,
                       progressColor: Colors.greenAccent,
                     ),
-                    Text(hoursCompleted.toString() + "/10"),
+                    Text(
+                        "${widget.todo.progress.toString()}/${widget.todo.totalUnits.toString()}"),
                   ],
                 ),
               ],
@@ -55,8 +59,14 @@ class _ProgressBarState extends State<ProgressBar> {
               child: InkWell(
                 onTap: () {
                   setState(() {
-                    if (hoursCompleted != 10) {
+                    if (hoursCompleted != widget.todo.totalUnits) {
                       hoursCompleted = hoursCompleted + 1;
+                      widget.todo.progress = hoursCompleted;
+                    }
+                    if (hoursCompleted == widget.todo.totalUnits) {
+                      print("Done!!!!");
+                      widget.todo.done = true;
+                      widget.todo.save();
                     }
                   });
                 },

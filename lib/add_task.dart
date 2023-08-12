@@ -174,9 +174,6 @@ class _AddTaskState extends State<AddTask> {
                             repeatState: s));
                   },
                   child: const Text("Save")),
-              const Text("Hello"),
-              ProgressBar(),
-              TaskWidget(),
             ],
           ),
         ));
