@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:todo_notes/add_task.dart';
 import 'package:todo_notes/model.dart';
 import 'package:todo_notes/model_todo.dart';
+import 'models/todo.dart';
+import 'progress_bar.dart';
+import 'task_widget.dart';
 
 class TodoList extends StatefulWidget {
   const TodoList({Key? key}) : super(key: key);
@@ -13,9 +17,16 @@ class TodoListState extends State {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-        valueListenable: Hive.box<List>('todo').listenable(),
+        valueListenable: Hive.box<Todo>('task').listenable(),
         builder: (context, box, _) {
-          List list = getTodos();
+          List list = box.values.toList().cast<Todo>();
+          List temp = [];
+          for (Todo i in list) {
+            if (i.done == false) {
+              temp.add(i);
+            }
+          }
+          list = temp;
           if (list.isEmpty) {
             return Container(
               margin: const EdgeInsets.only(top: 20),
@@ -30,18 +41,30 @@ class TodoListState extends State {
               ),
             );
           }
+          print(temp);
           return ListView.builder(
               itemCount: list.length,
               itemBuilder: (context, index) {
                 if (index == list.length - 1) {
+                  if (list[index].isGoal) {
+                    return Column(
+                      children: [
+                        ProgressBar(list[index]),
+                        ListItemButton(false),
+                      ],
+                    );
+                  }
                   return Column(
                     children: [
-                      ListItems(list[index]),
+                      TaskWidget(list[index]),
                       ListItemButton(false),
                     ],
                   );
                 }
-                return ListItems(list[index]);
+                if (list[index].isGoal) {
+                  return ProgressBar(list[index]);
+                }
+                return TaskWidget(list[index]);
               });
         });
   }
@@ -49,8 +72,8 @@ class TodoListState extends State {
 
 // ignore: must_be_immutable
 class ListItems extends StatefulWidget {
-  String title = "";
-  ListItems(this.title, {Key? key}) : super(key: key);
+  Todo todo;
+  ListItems(this.todo, {Key? key}) : super(key: key);
   @override
   ListItemsState createState() => ListItemsState();
 }
@@ -69,12 +92,13 @@ class ListItemsState extends State<ListItems> {
           Checkbox(
               value: value,
               onChanged: (x) {
-                removeTodos(widget.title);
+                widget.todo.done = true;
                 setState(() {
+                  printTodo();
                   value = x;
                 });
               }),
-          Text(widget.title,
+          Text(widget.todo.title,
               style: const TextStyle(
                   fontSize: 16, color: Color.fromARGB(255, 21, 77, 97))),
         ],
@@ -91,64 +115,22 @@ class ListItemButton extends StatefulWidget {
 }
 
 class ListItemsStateButton extends State<ListItemButton> {
+  void check_task(BuildContext context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const AddTask())).then(
+      (value) {
+        addTodos(value);
+      },
+    );
+  }
+
   final TextEditingController mycontroller = TextEditingController();
   bool _value = true;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text("Add new task"),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextField(
-                      controller: mycontroller,
-                      autofocus: true,
-                      decoration: const InputDecoration(
-                        hintText: "Enter task",
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Checkbox(
-                            value: _value,
-                            onChanged: (x) {
-                              setState(() {
-                                print("setstate runs $x $_value");
-                                if (x != null)
-                                  _value = x;
-                                else
-                                  _value = false;
-                              });
-                            }),
-                        Text("Daily"),
-                      ],
-                    ),
-                  ],
-                ),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        if (widget.isBook) {
-                          editBook("title", mycontroller.text);
-                        } else {
-                          addTodos(mycontroller.text);
-                          if (_value == true) {
-                            addDailyTodos(mycontroller.text);
-                          }
-                        }
-                        setState(() {});
-                        Navigator.pop(context);
-                      },
-                      child: const Text("Add"))
-                ],
-              );
-            });
+        check_task(context);
       },
       child: Container(
         padding: const EdgeInsets.all(23),
