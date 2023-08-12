@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import './model_todo.dart';
@@ -37,13 +36,9 @@ void daliyComp() {
   int previousMonth = previousDateTime.month;
   int previousWeek = previousDateTime.weekday;
 
-  print(currentDay);
-  print(previousDay);
-
   if (currentDay != previousDay ||
       currentWeek != previousWeek ||
       currentMonth != previousMonth) {
-    print("Date change detected!!!");
     for (Todo i in l) {
       if (i.repeatState == 1) {
         i.done = false;

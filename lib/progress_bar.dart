@@ -17,11 +17,30 @@ class _ProgressBarState extends State<ProgressBar> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: () {
-        print("Editing!!!");
+        showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: const Text("Are you sure to delete?"),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        widget.todo.delete();
+                        Navigator.pop(context);
+                      },
+                      child: const Text("Yes")),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text("No")),
+                ],
+              );
+            });
       },
       child: Container(
-          margin: EdgeInsets.all(20),
-          padding: EdgeInsets.all(10),
+          margin: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(10),
           // height: 80,
           decoration: BoxDecoration(
               border: Border.all(color: Colors.black, width: 2),
@@ -30,20 +49,19 @@ class _ProgressBarState extends State<ProgressBar> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     children: [
                       Text(
                         widget.todo.title,
-                        style: TextStyle(fontSize: 16),
+                        style: const TextStyle(fontSize: 16),
                       ),
                     ],
                   ),
                   Row(
                     children: [
                       LinearPercentIndicator(
-                        barRadius: Radius.circular(10),
+                        barRadius: const Radius.circular(10),
                         width: 200.0,
                         lineHeight: 10.0,
                         percent: (hoursCompleted /
@@ -58,8 +76,6 @@ class _ProgressBarState extends State<ProgressBar> {
                 ],
               ),
               Center(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                // crossAxisAlignment: CrossAxisAlignment.,
                 child: InkWell(
                   onTap: () {
                     setState(() {
@@ -68,13 +84,12 @@ class _ProgressBarState extends State<ProgressBar> {
                         widget.todo.progress = hoursCompleted;
                       }
                       if (hoursCompleted == widget.todo.totalUnits) {
-                        print("Done!!!!");
                         widget.todo.done = true;
                         widget.todo.save();
                       }
                     });
                   },
-                  child: Icon(Icons.add),
+                  child: const Icon(Icons.add),
                 ),
               )
             ],
