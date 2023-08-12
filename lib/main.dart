@@ -9,10 +9,8 @@ import 'package:todo_notes/model.dart';
 void main() async {
   await Hive.initFlutter();
   await Hive.openBox<List>('books');
-
   Hive.registerAdapter(TodoAdapter());
-  await Hive.openBox<Todo>('todos');
-  await Hive.openBox<int>('day');
+  await Hive.openBox<Todo>('task');
   // checktime();
   runApp(const MyApp());
 }

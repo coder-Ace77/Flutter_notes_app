@@ -13,14 +13,17 @@ class Todo {
   int progress;
   @HiveField(3)
   bool done;
+  @HiveField(6)
+  int? totalUnits;
   @HiveField(4)
   bool repeats;
   @HiveField(5)
   int repeatState;
   Todo({
     required this.title,
-    required this.done,
+    required this.totalUnits,
     required this.isGoal,
+    required this.done,
     required this.progress,
     required this.repeats,
     required this.repeatState,

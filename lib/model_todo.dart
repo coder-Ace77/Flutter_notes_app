@@ -2,16 +2,22 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'models/todo.dart';
 
-Box getTodoBox() => Hive.box<Todo>('todos');
+Box getTodoBox() => Hive.box<Todo>('task');
 
 void addTodos(x) {
   final box = getTodoBox();
+  if (x.title == null) {
+    print("Title is null");
+    return;
+  }
   box.add(x);
+  print("Task added");
+  printTodo();
 }
 
 void deleteTodos(x) {
   final box = getTodoBox();
-  box.delete(x);
+  print(x);
 }
 
 void editTodos(x, title, isGoal, progress, done, repeats, repeatState) {
@@ -22,4 +28,9 @@ void editTodos(x, title, isGoal, progress, done, repeats, repeatState) {
   x.repeats = repeats;
   x.repeatState = repeatState;
   x.save();
+}
+
+void printTodo() {
+  final box = getTodoBox();
+  print(box.values.toList().cast<Todo>());
 }

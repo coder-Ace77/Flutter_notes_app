@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:todo_notes/add_task.dart';
 import 'package:todo_notes/model.dart';
+import 'package:todo_notes/model_todo.dart';
 import 'models/todo.dart';
 
 class TodoList extends StatefulWidget {
@@ -13,9 +15,16 @@ class TodoListState extends State {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-        valueListenable: Hive.box<Todo>('todos').listenable(),
+        valueListenable: Hive.box<Todo>('task').listenable(),
         builder: (context, box, _) {
           List list = box.values.toList().cast<Todo>();
+          List temp = [];
+          for (Todo i in list) {
+            if (i.done == false) {
+              temp.add(i);
+            }
+          }
+          list = temp;
           if (list.isEmpty) {
             return Container(
               margin: const EdgeInsets.only(top: 20),
@@ -30,17 +39,19 @@ class TodoListState extends State {
               ),
             );
           }
+          print(temp);
           return ListView.builder(
               itemCount: list.length,
               itemBuilder: (context, index) {
                 if (index == list.length - 1) {
                   return Column(
                     children: [
+                      ListItems(list[index]),
                       ListItemButton(false),
                     ],
                   );
                 }
-                return ListItems(list[index].title);
+                return ListItems(list[index]);
               });
         });
   }
@@ -48,8 +59,8 @@ class TodoListState extends State {
 
 // ignore: must_be_immutable
 class ListItems extends StatefulWidget {
-  String title = "";
-  ListItems(this.title, {Key? key}) : super(key: key);
+  Todo todo;
+  ListItems(this.todo, {Key? key}) : super(key: key);
   @override
   ListItemsState createState() => ListItemsState();
 }
@@ -68,12 +79,13 @@ class ListItemsState extends State<ListItems> {
           Checkbox(
               value: value,
               onChanged: (x) {
-                // removeTodos(widget.title);
+                widget.todo.done = true;
                 setState(() {
+                  printTodo();
                   value = x;
                 });
               }),
-          Text(widget.title,
+          Text(widget.todo.title,
               style: const TextStyle(
                   fontSize: 16, color: Color.fromARGB(255, 21, 77, 97))),
         ],
@@ -90,6 +102,15 @@ class ListItemButton extends StatefulWidget {
 }
 
 class ListItemsStateButton extends State<ListItemButton> {
+  void check_task(BuildContext context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const AddTask())).then(
+      (value) {
+        addTodos(value);
+      },
+    );
+  }
+
   final TextEditingController mycontroller = TextEditingController();
   bool _value = true;
   @override
@@ -118,7 +139,6 @@ class ListItemsStateButton extends State<ListItemButton> {
                             value: _value,
                             onChanged: (x) {
                               setState(() {
-                                print("setstate runs $x $_value");
                                 if (x != null) {
                                   _value = x;
                                 } else {
@@ -147,16 +167,26 @@ class ListItemsStateButton extends State<ListItemButton> {
               );
             });
       },
-      child: Container(
-        padding: const EdgeInsets.all(23),
-        child: Row(
-          children: const [
-            Icon(Icons.add, color: Color.fromARGB(255, 21, 77, 97)),
-            Text("  Add new task",
-                style: TextStyle(
-                    fontSize: 16, color: Color.fromARGB(255, 65, 104, 119))),
-          ],
-        ),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(23),
+            child: Row(
+              children: const [
+                Icon(Icons.add, color: Color.fromARGB(255, 21, 77, 97)),
+                Text("  Add new task",
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Color.fromARGB(255, 65, 104, 119))),
+              ],
+            ),
+          ),
+          ElevatedButton(
+              onPressed: () {
+                check_task(context);
+              },
+              child: const Text("Check Button"))
+        ],
       ),
     );
   }

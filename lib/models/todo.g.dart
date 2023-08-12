@@ -18,8 +18,9 @@ class TodoAdapter extends TypeAdapter<Todo> {
     };
     return Todo(
       title: fields[0] as String,
-      done: fields[3] as bool,
+      totalUnits: fields[6] as int?,
       isGoal: fields[1] as bool,
+      done: fields[3] as bool,
       progress: fields[2] as int,
       repeats: fields[4] as bool,
       repeatState: fields[5] as int,
@@ -29,7 +30,7 @@ class TodoAdapter extends TypeAdapter<Todo> {
   @override
   void write(BinaryWriter writer, Todo obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -38,6 +39,8 @@ class TodoAdapter extends TypeAdapter<Todo> {
       ..write(obj.progress)
       ..writeByte(3)
       ..write(obj.done)
+      ..writeByte(6)
+      ..write(obj.totalUnits)
       ..writeByte(4)
       ..write(obj.repeats)
       ..writeByte(5)
