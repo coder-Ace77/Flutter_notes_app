@@ -27,8 +27,6 @@ class _ProgressBarState extends State<ProgressBar> {
               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
                       "Learn Artificial Intelligence",
@@ -37,8 +35,6 @@ class _ProgressBarState extends State<ProgressBar> {
                   ],
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  // crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     LinearPercentIndicator(
                       barRadius: Radius.circular(10),
