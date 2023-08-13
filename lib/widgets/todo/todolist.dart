@@ -125,7 +125,6 @@ class ListItemsStateButton extends State<ListItemButton> {
   }
 
   final TextEditingController mycontroller = TextEditingController();
-  bool _value = true;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -137,7 +136,7 @@ class ListItemsStateButton extends State<ListItemButton> {
         child: Row(
           children: const [
             Icon(Icons.add, color: Color.fromARGB(255, 21, 77, 97)),
-            Text("  Add new task",
+            Text(" Add new task",
                 style: TextStyle(
                     fontSize: 16, color: Color.fromARGB(255, 65, 104, 119))),
           ],

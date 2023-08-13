@@ -30,15 +30,13 @@ void daliyComp() {
 
   int currentDay = currentDateTime.day;
   int currentMonth = currentDateTime.month;
-  int currentWeek = currentDateTime.weekday;
+  int currentWeekDay = currentDateTime.weekday;
 
   int previousDay = previousDateTime.day;
   int previousMonth = previousDateTime.month;
-  int previousWeek = previousDateTime.weekday;
+  int previousWeekDay = previousDateTime.weekday;
 
-  if (currentDay != previousDay ||
-      currentWeek != previousWeek ||
-      currentMonth != previousMonth) {
+  if (currentDay != previousDay || currentMonth != previousMonth) {
     for (Todo i in l) {
       if (i.repeatState == 1) {
         i.done = false;
@@ -47,8 +45,7 @@ void daliyComp() {
       }
     }
   }
-  if (currentWeek != previousWeek || currentMonth != previousMonth) {
-    print("Date change detected!!!");
+  if ((currentWeekDay == 1 && currentWeekDay != previousWeekDay)) {
     for (Todo i in l) {
       if (i.repeatState == 2) {
         i.done = false;
@@ -57,7 +54,6 @@ void daliyComp() {
       }
     }
   }
-
   if (currentMonth != previousMonth) {
     for (Todo i in l) {
       if (i.repeatState == 3) {
