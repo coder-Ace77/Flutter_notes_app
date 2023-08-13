@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:todo_notes/add_task.dart';
-import 'package:todo_notes/model.dart';
-import 'package:todo_notes/model_todo.dart';
-import 'models/todo.dart';
+import 'package:todo_notes/widgets/todo/add_task.dart';
+import 'package:todo_notes/helpers/book/model.dart';
+import 'package:todo_notes/helpers/todo/model_todo.dart';
+import '../../models/todo/todo.dart';
 import 'progress_bar.dart';
 import 'task_widget.dart';
 

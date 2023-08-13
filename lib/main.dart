@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:todo_notes/books.dart';
-import 'package:todo_notes/models/todo.dart';
-// import 'package:todo_notes/model_todo.dart';
-import 'package:todo_notes/todo.dart';
+import 'package:todo_notes/widgets/book/books.dart';
+import 'package:todo_notes/models/todo/todo.dart';
+import 'package:todo_notes/widgets/todo/todo.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:todo_notes/model.dart';
-import './fetching_time.dart';
+import 'package:todo_notes/helpers/book/model.dart';
+import 'package:todo_notes/helpers/todo/fetching_time.dart';
 
 void main() async {
   await Hive.initFlutter();

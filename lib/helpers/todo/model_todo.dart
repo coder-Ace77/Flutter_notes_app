@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'models/todo.dart';
+import '../../models/todo/todo.dart';
 
 Box getTodoBox() => Hive.box<Todo>('task');
 

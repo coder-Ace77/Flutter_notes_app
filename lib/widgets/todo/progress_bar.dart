@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:todo_notes/models/todo.dart';
+import 'package:todo_notes/models/todo/todo.dart';
 
 class ProgressBar extends StatefulWidget {
   Todo todo;
@@ -12,7 +12,6 @@ class ProgressBar extends StatefulWidget {
 
 class _ProgressBarState extends State<ProgressBar> {
   bool isChecked = false;
-  var hoursCompleted = 0;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -64,7 +63,7 @@ class _ProgressBarState extends State<ProgressBar> {
                         barRadius: const Radius.circular(10),
                         width: 200.0,
                         lineHeight: 10.0,
-                        percent: (hoursCompleted /
+                        percent: (widget.todo.progress /
                             widget.todo.totalUnits!.toDouble()),
                         backgroundColor: Colors.grey,
                         progressColor: Colors.greenAccent,
@@ -79,11 +78,11 @@ class _ProgressBarState extends State<ProgressBar> {
                 child: InkWell(
                   onTap: () {
                     setState(() {
-                      if (hoursCompleted != widget.todo.totalUnits) {
-                        hoursCompleted = hoursCompleted + 1;
-                        widget.todo.progress = hoursCompleted;
+                      if (widget.todo.progress != widget.todo.totalUnits) {
+                        widget.todo.progress = widget.todo.progress + 1;
+                        widget.todo.save();
                       }
-                      if (hoursCompleted == widget.todo.totalUnits) {
+                      if (widget.todo.progress == widget.todo.totalUnits) {
                         widget.todo.done = true;
                         widget.todo.save();
                       }

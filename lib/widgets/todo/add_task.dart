@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import './progress_bar.dart';
-import './task_widget.dart';
-import 'package:todo_notes/models/todo.dart';
+import 'progress_bar.dart';
+import 'task_widget.dart';
+import 'package:todo_notes/models/todo/todo.dart';
 
 class AddTask extends StatefulWidget {
   const AddTask({super.key});
@@ -170,7 +170,7 @@ class _AddTaskState extends State<AddTask> {
                             isGoal: isGoal,
                             done: false,
                             progress: 0,
-                            repeats: currentText == "No Repeat" ? true : false,
+                            repeats: s == 0 ? false : true,
                             repeatState: s));
                   },
                   child: const Text("Save")),

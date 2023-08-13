@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import './model_todo.dart';
-import "./models/todo.dart";
+import 'model_todo.dart';
+import '../../models/todo/todo.dart';
 
 Box getTimeBox() {
   return Hive.box<DateTime>("DateTime");

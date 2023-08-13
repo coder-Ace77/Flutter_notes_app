@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_notes/models/todo.dart';
+import 'package:todo_notes/models/todo/todo.dart';
 
 class TaskWidget extends StatefulWidget {
   Todo todo;
@@ -11,7 +11,6 @@ class TaskWidget extends StatefulWidget {
 
 class _TaskWidget extends State<TaskWidget> {
   bool isChecked = false;
-  var hoursCompleted = 0;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -58,7 +57,12 @@ class _TaskWidget extends State<TaskWidget> {
                   setState(() {
                     isChecked = value!;
                     widget.todo.done = isChecked;
-                    widget.todo.save();
+                    if (widget.todo.repeats == true) {
+                      widget.todo.save();
+                    } else {
+                      print("Deleted");
+                      widget.todo.delete();
+                    }
                   });
                 })
           ],
