@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:todo_notes/pages.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:todo_notes/model.dart';
-import 'package:todo_notes/todolist.dart';
+import 'package:todo_notes/helpers/book/model.dart';
+import 'package:todo_notes/widgets/todo/todolist.dart';
+import 'package:todo_notes/pages.dart';
 
 class Books extends StatelessWidget {
   const Books({Key? key}) : super(key: key);
@@ -23,7 +23,7 @@ class Books extends StatelessWidget {
                 Container(
                     height: 200,
                     alignment: Alignment.center,
-                    child: Text("No Books")),
+                    child: const Text("No Books")),
               ],
             );
           }

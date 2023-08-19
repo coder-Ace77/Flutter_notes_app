@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:todo_notes/books.dart';
-import 'package:todo_notes/models/todo.dart';
-// import 'package:todo_notes/model_todo.dart';
-import 'package:todo_notes/todo.dart';
+import 'package:todo_notes/widgets/todo/percentage.dart';
+import 'package:todo_notes/widgets/book/books.dart';
+import 'package:todo_notes/models/todo/todo.dart';
+import 'package:todo_notes/widgets/todo/todo.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:todo_notes/model.dart';
-import './fetching_time.dart';
+import 'package:todo_notes/helpers/book/model.dart';
+import 'package:todo_notes/helpers/todo/fetching_time.dart';
 
 void main() async {
   await Hive.initFlutter();
@@ -95,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage>
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: Color.fromRGBO(50, 50, 50, 0.7),
+        backgroundColor: Colors.white,
         drawer: const NewDrawer(),
         appBar: AppBar(
           backgroundColor: Colors.black,
@@ -132,14 +132,14 @@ class _MyHomePageState extends State<MyHomePage>
                   Icons.book,
                   color: currentTabIndex == 0
                       ? Color.fromRGBO(255, 186, 0, 1)
-                      : Colors.white,
+                      : Colors.black,
                 )),
                 Tab(
                     icon: Icon(
                   Icons.check_box,
                   color: currentTabIndex == 1
                       ? Color.fromRGBO(255, 186, 0, 1)
-                      : Colors.white,
+                      : Colors.black,
                 )),
               ],
             ),
@@ -192,7 +192,7 @@ class NewDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: const Text("Clear Storage"),
+            title: const Text("Clear Storages"),
             leading: const Icon(Icons.delete_forever),
             iconColor: Colors.blueGrey,
             onTap: () {

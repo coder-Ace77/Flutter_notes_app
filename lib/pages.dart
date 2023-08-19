@@ -1,8 +1,7 @@
-import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:todo_notes/input.dart';
-import 'package:todo_notes/model.dart';
+import 'package:todo_notes/widgets/book/input.dart';
+import 'package:todo_notes/helpers/book/model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class Pages extends StatefulWidget {
@@ -103,7 +102,7 @@ class PageItem extends StatelessWidget {
   int index = 0;
   // ignore: prefer_final_fields
   bool _active = false;
-  Color color = Color(0xFF536D7A);
+  Color color = const Color(0xFF536D7A);
   int elevation = 0;
   List page = [];
   bool _state = false;
@@ -152,7 +151,7 @@ class PageItem extends StatelessWidget {
       widgetList.add(Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
+        children: const [
           Icon(Icons.delete),
           Icon(Icons.edit),
           Icon(Icons.share),

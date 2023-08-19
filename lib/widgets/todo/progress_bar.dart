@@ -24,7 +24,7 @@ class _ProgressBarState extends State<ProgressBar> {
           padding: EdgeInsets.all(10),
           // height: 80,
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.white, width: 2),
+              border: Border.all(color: Colors.black, width: 2),
               borderRadius: BorderRadius.circular(10)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -36,7 +36,7 @@ class _ProgressBarState extends State<ProgressBar> {
                     children: [
                       Text(
                         widget.todo.title,
-                        style: TextStyle(fontSize: 16, color: Colors.white),
+                        style: TextStyle(fontSize: 16),
                       ),
                     ],
                   ),
@@ -49,12 +49,10 @@ class _ProgressBarState extends State<ProgressBar> {
                         percent: (hoursCompleted /
                             widget.todo.totalUnits!.toDouble()),
                         backgroundColor: Colors.grey,
-                        progressColor: Color.fromRGBO(255, 186, 0, 1),
+                        progressColor: Colors.greenAccent,
                       ),
                       Text(
-                        "${widget.todo.progress.toString()}/${widget.todo.totalUnits.toString()}",
-                        style: TextStyle(color: Colors.white),
-                      ),
+                          "${widget.todo.progress.toString()}/${widget.todo.totalUnits.toString()}"),
                     ],
                   ),
                 ],
@@ -76,10 +74,7 @@ class _ProgressBarState extends State<ProgressBar> {
                       }
                     });
                   },
-                  child: Icon(
-                    Icons.add,
-                    color: Colors.orange,
-                  ),
+                  child: Icon(Icons.add),
                 ),
               )
             ],

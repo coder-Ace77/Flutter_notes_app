@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:todo_notes/add_task.dart';
-import 'package:todo_notes/model.dart';
-import 'package:todo_notes/model_todo.dart';
-import 'models/todo.dart';
+import 'package:todo_notes/widgets/todo/add_task.dart';
+import 'package:todo_notes/helpers/book/model.dart';
+import 'package:todo_notes/helpers/todo/model_todo.dart';
+import '../../models/todo/todo.dart';
 import 'progress_bar.dart';
 import 'task_widget.dart';
 
@@ -125,81 +125,22 @@ class ListItemsStateButton extends State<ListItemButton> {
   }
 
   final TextEditingController mycontroller = TextEditingController();
-  bool _value = true;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text("Add new task"),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextField(
-                      controller: mycontroller,
-                      autofocus: true,
-                      decoration: const InputDecoration(
-                        hintText: "Enter task",
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Checkbox(
-                            value: _value,
-                            onChanged: (x) {
-                              setState(() {
-                                if (x != null) {
-                                  _value = x;
-                                } else {
-                                  _value = false;
-                                }
-                              });
-                            }),
-                        const Text("Daily"),
-                      ],
-                    ),
-                  ],
-                ),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        if (widget.isBook) {
-                          editBook("title", mycontroller.text);
-                        } else {
-                          // addTodos();
-                        }
-                        setState(() {});
-                        Navigator.pop(context);
-                      },
-                      child: const Text("Add"))
-                ],
-              );
-            });
+        check_task(context);
       },
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(23),
-            child: Row(
-              children: const [
-                Icon(Icons.add, color: Color.fromARGB(255, 21, 77, 97)),
-                Text("  Add new task",
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Color.fromARGB(255, 65, 104, 119))),
-              ],
-            ),
-          ),
-          ElevatedButton(
-              onPressed: () {
-                check_task(context);
-              },
-              child: const Text("Check Button"))
-        ],
+      child: Container(
+        padding: const EdgeInsets.all(23),
+        child: Row(
+          children: const [
+            Icon(Icons.add, color: Color.fromARGB(255, 21, 77, 97)),
+            Text(" Add new task",
+                style: TextStyle(
+                    fontSize: 16, color: Color.fromARGB(255, 65, 104, 119))),
+          ],
+        ),
       ),
     );
   }
