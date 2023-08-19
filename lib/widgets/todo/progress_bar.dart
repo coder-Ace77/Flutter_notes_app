@@ -63,13 +63,13 @@ class _ProgressBarState extends State<ProgressBar> {
                         barRadius: const Radius.circular(10),
                         width: 200.0,
                         lineHeight: 10.0,
-                        percent: (widget.todo.progress /
+                        percent: (widget.todo.progress! /
                             widget.todo.totalUnits!.toDouble()),
                         backgroundColor: Colors.grey,
                         progressColor: Colors.greenAccent,
                       ),
                       Text(
-                          "${widget.todo.progress.toString()}/${widget.todo.totalUnits.toString()}"),
+                          "${widget.todo.progress!.toInt().toString()}/${widget.todo.totalUnits.toString()}"),
                     ],
                   ),
                 ],
@@ -79,7 +79,8 @@ class _ProgressBarState extends State<ProgressBar> {
                   onTap: () {
                     setState(() {
                       if (widget.todo.progress != widget.todo.totalUnits) {
-                        widget.todo.progress = widget.todo.progress + 1;
+                        widget.todo.progress = widget.todo.progress! + 1;
+                        print(widget.todo.progress);
                         widget.todo.save();
                       }
                       if (widget.todo.progress == widget.todo.totalUnits) {

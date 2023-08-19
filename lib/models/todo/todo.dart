@@ -9,8 +9,8 @@ class Todo extends HiveObject {
   String title;
   @HiveField(1)
   bool isGoal;
-  @HiveField(2)
-  int progress;
+  @HiveField(10)
+  double? progress;
   @HiveField(3)
   bool done;
   @HiveField(6)

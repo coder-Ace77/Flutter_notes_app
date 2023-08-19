@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'progress_bar.dart';
-import 'task_widget.dart';
 import 'package:todo_notes/models/todo/todo.dart';
 
 class AddTask extends StatefulWidget {
@@ -56,14 +54,14 @@ class _AddTaskState extends State<AddTask> {
           title: const Text("Add task"),
         ),
         body: Container(
-          margin: EdgeInsets.all(20),
+          margin: const EdgeInsets.all(20),
           child: Column(
             children: [
               SizedBox(
                 height: 50,
                 child: TextField(
                     controller: titleController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Title',
                         hintText: 'Enter the title')),
@@ -169,7 +167,7 @@ class _AddTaskState extends State<AddTask> {
                             totalUnits: _currentSliderValue.toInt(),
                             isGoal: isGoal,
                             done: false,
-                            progress: 0,
+                            progress: 0.0,
                             repeats: s == 0 ? false : true,
                             repeatState: s));
                   },
