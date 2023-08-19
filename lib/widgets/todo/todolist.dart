@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_notes/widgets/todo/percentage.dart';
 import 'package:todo_notes/widgets/todo/add_task.dart';
-import 'package:todo_notes/helpers/book/model.dart';
 import 'package:todo_notes/helpers/todo/model_todo.dart';
 import '../../models/todo/todo.dart';
 import 'progress_bar.dart';
@@ -18,7 +17,7 @@ class TodoListState extends State {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-        valueListenable: Hive.box<Todo>('task').listenable(),
+        valueListenable: Hive.box<Todo>('tasks').listenable(),
         builder: (context, box, _) {
           List list = box.values.toList().cast<Todo>();
           List temp = [];
@@ -42,7 +41,6 @@ class TodoListState extends State {
               ),
             );
           }
-          print(temp);
           return ListView.builder(
               itemCount: list.length,
               itemBuilder: (context, index) {

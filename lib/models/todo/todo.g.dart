@@ -21,7 +21,7 @@ class TodoAdapter extends TypeAdapter<Todo> {
       totalUnits: fields[6] as int?,
       isGoal: fields[1] as bool,
       done: fields[3] as bool,
-      progress: fields[2] as int,
+      progress: fields[10] as double,
       repeats: fields[4] as bool,
       repeatState: fields[5] as int,
     );
@@ -35,7 +35,7 @@ class TodoAdapter extends TypeAdapter<Todo> {
       ..write(obj.title)
       ..writeByte(1)
       ..write(obj.isGoal)
-      ..writeByte(2)
+      ..writeByte(10)
       ..write(obj.progress)
       ..writeByte(3)
       ..write(obj.done)

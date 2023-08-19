@@ -14,6 +14,8 @@ class ProgressBar extends StatefulWidget {
 class _ProgressBarState extends State<ProgressBar> {
   bool isChecked = false;
   var hoursCompleted = 0;
+  DateTime curr_time = DateTime.now();
+  int elapsed = 0;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -21,11 +23,20 @@ class _ProgressBarState extends State<ProgressBar> {
         print("Editing!!!");
       },
       onTap: () {
+        curr_time = DateTime.now();
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (contex) =>
-                    PercentageIndicator(task: widget.todo.title)));
+                    PercentageIndicator(task: widget.todo.title))).then(
+          (value) {
+            elapsed = DateTime.now().minute - curr_time.minute;
+            print("elapsed $elapsed");
+            widget.todo.progress = widget.todo.progress! + elapsed / 60;
+            print("${widget.todo.progress}");
+            widget.todo.save();
+          },
+        );
       },
       child: Container(
           margin: EdgeInsets.all(20),
@@ -54,13 +65,13 @@ class _ProgressBarState extends State<ProgressBar> {
                         barRadius: Radius.circular(10),
                         width: 200.0,
                         lineHeight: 10.0,
-                        percent: (hoursCompleted /
+                        percent: (widget.todo.progress! /
                             widget.todo.totalUnits!.toDouble()),
                         backgroundColor: Colors.grey,
                         progressColor: Colors.greenAccent,
                       ),
                       Text(
-                          "${widget.todo.progress.toString()}/${widget.todo.totalUnits.toString()}"),
+                          "${widget.todo.progress!.toInt().toString()}/${widget.todo.totalUnits.toString()}"),
                     ],
                   ),
                 ],
@@ -71,9 +82,10 @@ class _ProgressBarState extends State<ProgressBar> {
                 child: InkWell(
                   onTap: () {
                     setState(() {
-                      if (hoursCompleted != widget.todo.totalUnits) {
-                        hoursCompleted = hoursCompleted + 1;
-                        widget.todo.progress = hoursCompleted;
+                      if (widget.todo.progress != widget.todo.totalUnits) {
+                        widget.todo.progress = widget.todo.progress! + 1;
+                        print(widget.todo.progress);
+                        widget.todo.save();
                       }
                       if (hoursCompleted == widget.todo.totalUnits) {
                         print("Done!!!!");

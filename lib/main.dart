@@ -12,7 +12,7 @@ void main() async {
   await Hive.openBox<List>('books');
   await Hive.openBox<DateTime>("DateTime");
   Hive.registerAdapter(TodoAdapter());
-  await Hive.openBox<Todo>('task');
+  await Hive.openBox<Todo>('tasks');
   daliyComp();
   runApp(const MyApp());
 }
@@ -188,6 +188,10 @@ class NewDrawer extends StatelessWidget {
             iconColor: Colors.blueGrey,
             title: const Text("About"),
             onTap: () {
+              Hive.box("task").clear();
+              SnackBar(
+                content: const Text("Cleared"),
+              );
               Navigator.pop(context);
             },
           ),

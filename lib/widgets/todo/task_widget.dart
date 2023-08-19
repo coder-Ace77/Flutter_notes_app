@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_notes/models/todo/todo.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class TaskWidget extends StatefulWidget {
   Todo todo;
@@ -18,21 +19,24 @@ class _TaskWidget extends State<TaskWidget> {
         showDialog(
             context: context,
             builder: (_) {
-              return AlertDialog(
-                title: const Text("Are you sure to delete?"),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        widget.todo.delete();
-                        Navigator.pop(context);
-                      },
-                      child: const Text("Yes")),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text("No")),
-                ],
+              return Animate(
+                effects: [FadeEffect(duration: 50.ms)],
+                child: AlertDialog(
+                  title: const Text("Are you sure to delete?"),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          widget.todo.delete();
+                          Navigator.pop(context);
+                        },
+                        child: const Text("Yes")),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text("No")),
+                  ],
+                ),
               );
             });
       },

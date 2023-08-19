@@ -55,13 +55,13 @@ class _PercentageIndicatorState extends State<PercentageIndicator> {
                 });
               },
               child: SizedBox(
-                width: 100,
+                width: 70,
                 child: Row(
                   children: [
                     Icon(
-                      _isPause ? Icons.pause : Icons.play_arrow,
+                      _isPause ? Icons.play_arrow : Icons.pause,
                     ),
-                    Text(_isPause ? "Resume" : "pause"),
+                    Text(_isPause ? " Resume" : " Pause"),
                   ],
                 ),
               )),
