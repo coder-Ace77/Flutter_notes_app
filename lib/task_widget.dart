@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:todo_notes/models/todo.dart';
+import './models/todo/todo.dart';
 
 class TaskWidget extends StatefulWidget {
   Todo todo;

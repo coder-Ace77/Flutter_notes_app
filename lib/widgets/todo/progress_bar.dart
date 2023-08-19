@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:todo_notes/models/todo.dart';
+import '../../models/todo/todo.dart';
+import './percentage.dart';
 
 class ProgressBar extends StatefulWidget {
   Todo todo;
@@ -18,6 +19,13 @@ class _ProgressBarState extends State<ProgressBar> {
     return GestureDetector(
       onLongPress: () {
         print("Editing!!!");
+      },
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (contex) =>
+                    PercentageIndicator(task: widget.todo.title)));
       },
       child: Container(
           margin: EdgeInsets.all(20),

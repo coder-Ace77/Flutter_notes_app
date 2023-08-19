@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:todo_notes/widgets/todo/percentage.dart';
 import 'package:todo_notes/widgets/todo/add_task.dart';
 import 'package:todo_notes/helpers/book/model.dart';
 import 'package:todo_notes/helpers/todo/model_todo.dart';
@@ -134,11 +135,22 @@ class ListItemsStateButton extends State<ListItemButton> {
       child: Container(
         padding: const EdgeInsets.all(23),
         child: Row(
-          children: const [
+          children: [
             Icon(Icons.add, color: Color.fromARGB(255, 21, 77, 97)),
             Text(" Add new task",
                 style: TextStyle(
                     fontSize: 16, color: Color.fromARGB(255, 65, 104, 119))),
+            SizedBox(width: 20),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PercentageIndicator(
+                                task: "Learn ML",
+                              )));
+                },
+                child: const Text("Percentage Indicator"))
           ],
         ),
       ),
