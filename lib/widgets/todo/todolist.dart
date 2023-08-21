@@ -21,7 +21,28 @@ class TodoListState extends State {
         builder: (context, box, _) {
           List list = box.values.toList().cast<Todo>();
           List temp = [];
+          List days = [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ];
+          final today = DateTime.now().weekday;
           for (Todo i in list) {
+            for (String j in days) {
+              if (j == i.title) {
+                if (today == days.indexOf(j) + 1) {
+                  i.done = false;
+                  i.save();
+                } else {
+                  i.done = true;
+                  i.save();
+                }
+              }
+            }
             if (i.done == false) {
               temp.add(i);
             }
