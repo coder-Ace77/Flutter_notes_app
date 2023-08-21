@@ -98,52 +98,31 @@ class _MyHomePageState extends State<MyHomePage>
         backgroundColor: Colors.white,
         drawer: const NewDrawer(),
         appBar: AppBar(
-          backgroundColor: Colors.black,
           centerTitle: true,
           title: Text(widget.title, style: TextStyle()),
-          leading: Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                icon: const Icon(
-                  Icons.library_books_outlined,
-                ),
-                onPressed: () {
-                  print(DefaultTabController.of(context).index);
-                  Scaffold.of(context).openDrawer();
-                },
-                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-              );
-            },
-          ),
         ),
         body: Column(
           children: [
             TabBar(
               onTap: (value) {
                 setState(() {
-                  print(value);
                   currentTabIndex = value;
                 });
               },
-              padding: EdgeInsets.fromLTRB(150, 0, 150, 0),
-              tabs: [
+              tabs: const [
                 Tab(
                     icon: Icon(
                   Icons.book,
-                  color: currentTabIndex == 0
-                      ? Color.fromRGBO(255, 186, 0, 1)
-                      : Colors.black,
+                  color: Color.fromARGB(255, 57, 51, 51),
                 )),
                 Tab(
                     icon: Icon(
                   Icons.check_box,
-                  color: currentTabIndex == 1
-                      ? Color.fromRGBO(255, 186, 0, 1)
-                      : Colors.black,
+                  color: Color.fromARGB(255, 57, 51, 51),
                 )),
               ],
             ),
-            Expanded(
+            const Expanded(
               child: TabBarView(children: [
                 Books(),
                 Tasks(),
