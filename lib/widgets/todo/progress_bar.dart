@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:todo_notes/models/todo/todo.dart';
+import '../../models/todo/todo.dart';
+import './percentage.dart';
 
 class ProgressBar extends StatefulWidget {
   Todo todo;
@@ -12,34 +13,34 @@ class ProgressBar extends StatefulWidget {
 
 class _ProgressBarState extends State<ProgressBar> {
   bool isChecked = false;
+  var hoursCompleted = 0;
+  DateTime curr_time = DateTime.now();
+  int elapsed = 0;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: () {
-        showDialog(
-            context: context,
-            builder: (_) {
-              return AlertDialog(
-                title: const Text("Are you sure to delete?"),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        widget.todo.delete();
-                        Navigator.pop(context);
-                      },
-                      child: const Text("Yes")),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text("No")),
-                ],
-              );
-            });
+        print("Editing!!!");
+      },
+      onTap: () {
+        curr_time = DateTime.now();
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (contex) =>
+                    PercentageIndicator(task: widget.todo.title))).then(
+          (value) {
+            elapsed = DateTime.now().minute - curr_time.minute;
+            print("elapsed $elapsed");
+            widget.todo.progress = widget.todo.progress! + elapsed / 60;
+            print("${widget.todo.progress}");
+            widget.todo.save();
+          },
+        );
       },
       child: Container(
-          margin: const EdgeInsets.all(20),
-          padding: const EdgeInsets.all(10),
+          margin: EdgeInsets.all(20),
+          padding: EdgeInsets.all(10),
           // height: 80,
           decoration: BoxDecoration(
               border: Border.all(color: Colors.black, width: 2),
@@ -48,19 +49,20 @@ class _ProgressBarState extends State<ProgressBar> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     children: [
                       Text(
                         widget.todo.title,
-                        style: const TextStyle(fontSize: 16),
+                        style: TextStyle(fontSize: 16),
                       ),
                     ],
                   ),
                   Row(
                     children: [
                       LinearPercentIndicator(
-                        barRadius: const Radius.circular(10),
+                        barRadius: Radius.circular(10),
                         width: 200.0,
                         lineHeight: 10.0,
                         percent: (widget.todo.progress! /
@@ -75,6 +77,8 @@ class _ProgressBarState extends State<ProgressBar> {
                 ],
               ),
               Center(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // crossAxisAlignment: CrossAxisAlignment.,
                 child: InkWell(
                   onTap: () {
                     setState(() {
@@ -83,13 +87,14 @@ class _ProgressBarState extends State<ProgressBar> {
                         print(widget.todo.progress);
                         widget.todo.save();
                       }
-                      if (widget.todo.progress == widget.todo.totalUnits) {
+                      if (hoursCompleted == widget.todo.totalUnits) {
+                        print("Done!!!!");
                         widget.todo.done = true;
                         widget.todo.save();
                       }
                     });
                   },
-                  child: const Icon(Icons.add),
+                  child: Icon(Icons.add),
                 ),
               )
             ],
