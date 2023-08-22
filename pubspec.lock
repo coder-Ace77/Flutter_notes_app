@@ -416,6 +416,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.3"
+  hover_menu:
+    dependency: "direct main"
+    description:
+      name: hover_menu
+      sha256: "4a28a3fe6de92b4cefbfd0935c5442441125291760ae4a7b568628554c6c0237"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1+3"
   http:
     dependency: transitive
     description:

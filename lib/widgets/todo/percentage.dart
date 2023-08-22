@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
+import '../../models/todo/todo.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
+import 'package:todo_notes/helpers/todo/model_todo.dart';
 
 class PercentageIndicator extends StatefulWidget {
-  String task;
-  PercentageIndicator({required this.task, super.key});
+  final Todo task;
+  const PercentageIndicator({required this.task, super.key});
 
   @override
   State<PercentageIndicator> createState() => _PercentageIndicatorState();
 }
 
 class _PercentageIndicatorState extends State<PercentageIndicator> {
-  CountDownController _controller = CountDownController();
+  final CountDownController _controller = CountDownController();
   bool _isPause = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.task),
+        title: Text(widget.task.title),
         centerTitle: true,
       ),
       body: Column(
@@ -29,17 +31,36 @@ class _PercentageIndicatorState extends State<PercentageIndicator> {
               fillColor: Colors.green,
               ringColor: Colors.amber,
               isReverseAnimation: true,
-              // color: Colors.white,
               controller: _controller,
-              backgroundColor: Colors.white54,
+              backgroundColor: Color.fromARGB(137, 215, 208, 208),
               strokeWidth: 10.0,
               strokeCap: StrokeCap.round,
               isTimerTextShown: true,
               isReverse: true,
               onComplete: () {
-                print("Completed");
+                widget.task.progress = widget.task.progress! + 1;
+                widget.task.save();
+                final today = DateTime.now().weekday;
+                var list = getTodoList();
+                List days = [
+                  "Monday",
+                  "Tuesday",
+                  "Wednesday",
+                  "Thursday",
+                  "Friday",
+                  "Saturday",
+                  "Sunday"
+                ];
+                for (var i = 0; i < list.length; i++) {
+                  if (list[i].title == days[today - 1]) {
+                    list[i].progress = list[i].progress! + 1;
+                    list[i].save();
+                    break;
+                  }
+                }
+                Navigator.pop(context);
               },
-              textStyle: TextStyle(fontSize: 50.0, color: Colors.black),
+              textStyle: const TextStyle(fontSize: 50.0, color: Colors.black),
             ),
           ),
           ElevatedButton(
@@ -65,6 +86,11 @@ class _PercentageIndicatorState extends State<PercentageIndicator> {
                   ],
                 ),
               )),
+          Text("Repeats : ${widget.task.repeats.toString()}"),
+          Text("Progress : ${widget.task.progress.toString()}"),
+          Text("Total Units : ${widget.task.totalUnits.toString()}"),
+          Text("Done : ${widget.task.done.toString()}"),
+          Text("Repeat State : ${widget.task.repeatState.toString()}")
         ],
       ),
     );

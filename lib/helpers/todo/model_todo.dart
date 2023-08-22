@@ -34,3 +34,8 @@ void printTodo() {
   final box = getTodoBox();
   print(box.values.toList().cast<Todo>());
 }
+
+List getTodoList() {
+  final box = getTodoBox();
+  return box.values.toList().cast<Todo>();
+}
